@@ -119,7 +119,7 @@ data_types <- data.frame(
   got_it = c(rep("yes", 5), "no"),
   answer = rep(42L, 6)
 )
-plot(data_types$types,data_types$usage_probability)
+boxplot(usage_probability ~ types, data_types)
 
 # Aside from Base R function, you can include
 # third party function, objects, and data
@@ -208,3 +208,4 @@ tree[[2]]
 
 # left child of right child:list(4, 5)
 tree[[2]][[1]]
+

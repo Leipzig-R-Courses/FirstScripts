@@ -148,7 +148,7 @@ ggplot(data = mpg) +
 # - What does the se argument to geom_smooth() do?
 # - Reproduce the graphs of the exercise slide.
 
-# mulitplots
+# grid plots
 
 p1 <- ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
@@ -158,7 +158,6 @@ p2 <- ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_point() + 
   geom_smooth()
 
-multiplot(p1, p2)
 library(gridExtra)
 grid.arrange(p1, p2, nrow = 2)
 
@@ -261,7 +260,8 @@ ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
   coord_flip()
 
 #map
-
+# install.packages("maps")
+library(maps)
 italy <- map_data("italy")
 
 ggplot(italy, aes(long, lat, group = group)) +
