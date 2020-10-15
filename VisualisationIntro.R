@@ -6,10 +6,10 @@ ggplot2::mpg
 ?mpg
 View(mpg)
 
-ggplot(data = mpg) + 
+ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy))
 
-# ggplot(data = <DATA>) + 
+# ggplot(data = <DATA>) +
 # <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
 
 ### EXERCISES

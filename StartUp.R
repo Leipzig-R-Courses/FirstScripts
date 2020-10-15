@@ -9,7 +9,7 @@ tidyverse_update()
 # install.packages(c("nycflights13", "gapminder", "Lahman"))
 
 # google, stackoverflow
-# Sys.setenv(LANGUAGE = "en") 
+# Sys.setenv(LANGUAGE = "en")
 
 # install.packages("esquisse")
 

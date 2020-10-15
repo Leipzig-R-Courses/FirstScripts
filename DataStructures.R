@@ -1,10 +1,10 @@
 # R is like a fast calculator
 
-232047294879347 * 242424 / 12313 +2
+232047294879347 * 242424 / 12313 + 2
 
 # in R <- is used to assign a value to a variable. You can also use =
 
-test_variable <- 232047294879347 * 242424 / 12313 +2
+test_variable <- 232047294879347 * 242424 / 12313 + 2
 test_variable
 
 #you can use rm() to remove a variable, object
@@ -66,7 +66,7 @@ class(variable)
 
 object.size(raw())
 
-### The types you will use most in DH are characters, numeric, and logical
+### The types you will use most are characters, numeric, and logical
 
 ### Technically everything that you have produced so far are vectors
 ### Vectors can be combined using the c() function
@@ -106,6 +106,7 @@ factor(apples)
 
 # Have a look
 apples
+factor(apples)
 factor_apples
 nlevels(factor_apples)
 factor_apples[4]
