@@ -1,0 +1,286 @@
+---
+title: "Data Structures in R"
+author: "Thomas Koentges"
+date: "10/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Basics 
+
+R is like a fast calculator
+
+```{r}
+232047294879347 * 242424 / 12313 + 2
+```
+
+In R `<-` is used to assign a value to a variable. You can also use `=`.
+
+```{r}
+test_variable <- 232047294879347 * 242424 / 12313 + 2
+test_variable
+```
+
+You can use `rm() to remove a variable or object.
+
+```{r}
+test_variable
+rm(test_variable)
+test_variable = 2
+test_variable
+```
+
+You do not have to remove to update or change the variable and you can change the variable using it's own value.
+
+```{r}
+test_variable <- test_variable * test_variable
+test_variable
+```
+
+Aside from Base R functions, you can include third party functions, objects, and data via libraries
+```{r}
+# install.packages("tidyverse")
+# This without the leading # would be the way to install a library.
+# A line with a leading # is ignored by R.
+# I have done so, because I do not want to install a package, already installed on my computer.
+# You only have to use the install.packages() function once on each new system
+# or after upgrading your R version.
+
+# You can also use those #-lines to comment your code
+# if you are using RStudio have a look what happens when you
+# start a line with # and finish the line with ####
+# This feature of RStudio helps you to organise your code.
+library(tidyverse)
+mpg %>% ggplot(aes(displ,hwy)) + geom_point()
+# you do not need to understand the above code yet, just understand that we are using an external library
+```
+The tidyverse package is a library that contains a lot of useful features and it is the package, I use in almost every R programme.  
+You can also generate your own functions:
+```{r}
+myFunction <- function(x) {
+  result <- x + 2
+  return(result)
+}
+myFunction(15)
+```
+
+But before we make it anymore complicated than this, let's have a look at the different data types and structures R has to offer.
+
+# 2. R's Data Types 
+
+The datatype of each variable is inferred:  
+Logical is either `TRUE` or `FALSE`.
+```{r}
+variable <- FALSE 
+class(variable)
+```
+
+Numeric is a number that can include fractual parts, i.e. 2.34.
+
+```{r}
+variable <- 2.34 
+class(variable)
+```
+
+Integer is a whole number.
+
+```{r}
+variable <- 2L 
+variable
+class(variable)
+```
+
+##### Sidetrack
+Integers are cheaper than Numerics:
+```{r}
+object.size(c(1L,2L,3L,4L,5L)) < object.size(c(1,2,3,4,5))
+```
+Unless they are empty:
+```{r}
+object.size(numeric()) == object.size(integer())
+```
+Then they are both 48bytes:
+```{r}
+object.size(numeric())
+```
+##### Back on track
+
+You can also express complex numbers.
+```
+variable <- 3 + 2i
+variable
+class(variable)
+```
+And plot them:
+```{r}
+plot(variable)
+```
+
+Strings are called characters in R.
+```{r}
+variable <- "hello world"
+variable
+class(variable)
+```
+
+The last data type is `raw`. This refers to a byte stream.
+```{r}
+variable <- charToRaw(variable)
+variable
+class(variable)
+```
+
+Raw objects are small. Empty raw objects are also 48bytes though:
+
+```{r}
+object.size(raw())
+```
+
+The types you will use most are characters, numeric, and logical.
+
+# 3. Data Structures
+
+Technically everything that you have produced so far are vectors. Vectors can be combined using the `c()` function. Vectors can only contain one type of data. They will throw an error or normalise if you try to force two different types together.
+
+```{r}
+VectorA <- 2
+VectorB <- c(1L,2L)
+c(VectorA,VectorB)
+class(c(VectorA,VectorB))
+class(c(VectorB))
+```
+
+A list is an R-object which can contain many different types, such as vectors, functions and even another list inside it.
+
+```{r}
+list(VectorA, VectorB, list(VectorA, VectorB), mean)
+```
+
+A matrix is a two-dimensional rectangular data set of ONE data type. It can be created using a vector input to the matrix function. This is how you create a matrix:
+```{r}
+M <- matrix( c('a','a','b','c','b','a'), nrow = 2, ncol = 3, byrow = TRUE)
+M
+```
+
+If you want to know who the `matrix()` function works, you can ask R:
+```{r}
+?matrix
+```
+
+Let's have a look at the result, if we use the same input vector, but a different method of filling the matrix:
+```{r}
+M <- matrix(c('a','a','b','c','b','a'), nrow = 2, ncol = 3, byrow = FALSE)
+M
+```
+
+Do you see how it has changed? 
+
+A factor stores the vector and all its unique values.
+
+```{r}
+# Create a vector.
+apples <- c('iOS','iPhone','MBP','iPhone','MBP')
+# Create a factor object.
+factor_apples <- factor(apples, levels = c("iOS", "iPhone", "MBP", "Mac"), ordered = T)
+factor(apples)
+
+# Have a look
+apples
+factor(apples)
+factor_apples
+nlevels(factor_apples)
+factor_apples[4]
+as.character(factor_apples[4])
+```
+
+And finally, Data Frames are mixed data presented in tabular form. 
+
+```{r}
+# Create the data frame.
+data_types <- data.frame(
+  types = c("logical", "numerical","integer", "complex", "character", "raw"), 
+  usage_probability = c(1, 1, 1, 0.1, 1, 0.5), 
+  got_it = c(rep("yes", 5), "no"),
+  answer = rep(42L, 6)
+)
+boxplot(usage_probability ~ types, data_types)
+```
+
+The `tidyverse` has also a modernised version of the dataframe called tibble:
+
+```{r}
+library(tidyverse)
+data_types_tibble <- as_tibble(data_types)
+
+# Let's have a look
+data_types
+data_types_tibble
+```
+You might already see the advantages of the tibble.
+
+# 4. Other data Structures often used in programming
+
+## Strings and Arrays
+Strings in R are called characters and they behave differently than in other programming languages:
+```{r}
+newString <- "test"
+length(newString)
+nchar(newString)
+```
+
+One dimensional arrays of simple types in R are best expressed as vectors. And so, if another developer talks about "arrays", the R programmer should translate that to "vectors". There is actually a data structure called "array" in R, but this is mainly reserved for multi-dimensionional arrays:
+
+```{r}
+intArray <- c(7L,8L,9L,10L)
+length(intArray)
+intArray 
+
+## sidetrack, you do not need to remember this
+intRealArray <- array(c(7L,8L,9L,10L),dim = c(2,2))
+intRealArray
+```
+
+## Hash table
+R does not have hash tables. Instead, R uses something like it that is called environment or it uses lists. That said ther is a `hashmap` library.
+
+## Linked Lists
+Linked list are directly implemented in R using list:
+
+```{r}
+lst <- list() # creates an empty (length zero) list
+lst
+lst[[1]] <- 1 # automagically extends the lst
+lst[[2]] <- 2 # ditto
+lst
+
+lst <- vector("list", 5)
+lst
+lst <- list(1, 2, 3, 4, 5)
+lst
+lst <- lst[-2]
+lst
+```
+
+## Trees
+
+In R trees are just a list of lists. As an aside, R sometimes is not very memory efficient (if you do not watch out) and it likes copying (a lot). And so, if you want to store the data as a more complex graph, you need to use a graph db.
+
+Here is an example of a simple tree:
+
+```{r}
+tree <- list(list(1, 2), list(3, list(4, 5)))
+
+# left child: list(1, 2)
+tree[[1]]
+
+# right child
+tree[[2]]
+
+# left child of right child:list(4, 5)
+tree[[2]][[1]]
+```
+
+That's all. Feel free to go over this page again at a later stage. Those are some solid mechanics for more complex problems.
